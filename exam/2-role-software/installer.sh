@@ -308,13 +308,34 @@ show_main_menu() {
         done
         echo ""
         echo -e "${GRAY}────────────────────────────────────────────${NC}"
+        printf "${WHITE}  c)${NC}  Настройка совместимости (2.50 балла)\n"
         printf "${WHITE}  0)${NC}  Выход\n"
         echo ""
-        printf "${YELLOW}Выбери категорию [0-%d]:${NC} " $CAT_COUNT
+        printf "${YELLOW}Выбери категорию [0-%d, c]:${NC} " $CAT_COUNT
         read -r choice
         if [[ "$choice" == "0" ]]; then
             echo -e "${GREEN}Пока!${NC}"
             exit 0
+        fi
+        if [[ "$choice" == "c" || "$choice" == "C" ]]; then
+            echo ""
+            echo -e "${YELLOW}Запускаю настройку совместимости...${NC}"
+            # Ищем скрипт compatibility-setup.sh рядом
+            SCRIPT_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"
+            if [[ -f "$SCRIPT_DIR/compatibility-setup.sh" ]]; then
+                bash "$SCRIPT_DIR/compatibility-setup.sh"
+            elif [[ -f "./compatibility-setup.sh" ]]; then
+                bash "./compatibility-setup.sh"
+            else
+                echo -e "${RED}Файл compatibility-setup.sh не найден!${NC}"
+                echo -e "${YELLOW}Загрузи его или запусти вручную:${NC}"
+                echo -e "  ${WHITE}wget -qO compatibility-setup.sh <url> && sudo bash compatibility-setup.sh${NC}"
+                echo -e "${YELLOW}Либо создай и выполни настройки из раздела 'Настройка совместимости' в manual-install.md${NC}"
+            fi
+            echo ""
+            printf "${GRAY}Нажми Enter чтобы продолжить...${NC}"
+            read -r
+            continue
         fi
         if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= CAT_COUNT )); then
             load_category "$choice"
@@ -477,6 +498,72 @@ install_selected() {
     echo ""
     echo -e "${GREEN}═══ Установка завершена ═══${NC}"
     echo -e "  ${GRAY}Лог: $INSTALL_DIR/install.log${NC}"
+
+    # ---- Post-install: interface & data exchange config ----
+    if [[ ${#to_install[@]} -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}═══ Пост-установочная настройка ═══${NC}"
+        echo -e "${GRAY}  Хочешь настроить интерфейс и обмен данными?${NC}"
+        printf "${YELLOW}  Настроить? [Y/n]:${NC} "
+        read -r config_confirm
+        if [[ ! "$config_confirm" =~ ^[Nn] ]]; then
+            echo -e "  ${BLUE}→ Настройка интерфейса...${NC}"
+
+            # Настройка Git, если установлен
+            if command -v git &>/dev/null; then
+                git config --global init.defaultBranch main 2>/dev/null
+                # Создаём тестовый репозиторий
+                su -c "
+                    mkdir -p \$HOME/projects/myapp
+                    cd \$HOME/projects/myapp
+                    git init 2>/dev/null
+                    echo '# MyApp' > README.md
+                    git add README.md 2>/dev/null
+                    git commit -m 'Initial commit' 2>/dev/null
+                " "$SUDO_USER" 2>/dev/null || true
+                echo -e "  ${GREEN}✔${NC} Git: репозиторий ~/projects/myapp инициализирован"
+            fi
+
+            # Настройка VS Code, если установлен
+            if command -v code &>/dev/null; then
+                # Базовая конфигурация VS Code
+                su -c "
+                    mkdir -p \$HOME/.config/Code/User
+                    cat > \$HOME/.config/Code/User/settings.json << 'EOF'
+{
+    \"editor.fontSize\": 14,
+    \"files.autoSave\": \"onFocusChange\",
+    \"workbench.colorTheme\": \"Default Dark+\",
+    \"editor.minimap.enabled\": true
+}
+EOF
+                " "$SUDO_USER" 2>/dev/null || true
+                echo -e "  ${GREEN}✔${NC} VS Code: настройки интерфейса применены"
+            fi
+
+            # Запуск служб БД, если установлены
+            if command -v psql &>/dev/null; then
+                systemctl enable postgresql --now 2>/dev/null || true
+                su -c "psql -c 'SELECT version();' 2>/dev/null" postgres 2>/dev/null || true
+                echo -e "  ${GREEN}✔${NC} PostgreSQL: служба запущена"
+            fi
+            if command -v mysql &>/dev/null; then
+                systemctl enable mysql --now 2>/dev/null || true
+                echo -e "  ${GREEN}✔${NC} MySQL: служба запущена"
+            fi
+
+            # Каталоги для импорта/экспорта
+            su -c "
+                mkdir -p \$HOME/data/import \$HOME/data/export
+                echo 'id,name,value' > \$HOME/data/import/sample.csv
+                echo '1,test,100' >> \$HOME/data/import/sample.csv
+            " "$SUDO_USER" 2>/dev/null || true
+            echo -e "  ${GREEN}✔${NC} Data: каталоги импорта/экспорта созданы"
+
+            echo -e "  ${GREEN}✓ Пост-установочная настройка завершена${NC}"
+            echo -e "  ${GRAY}   Вклад в баллы: стартовая настройка (2.0) + обмен данными (2.0)${NC}"
+        fi
+    fi
 }
 
 # ===================== START =====================

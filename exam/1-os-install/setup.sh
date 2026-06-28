@@ -213,7 +213,13 @@ apt install -y logwatch -qq
 
 echo "  + auditd запущен"
 echo "  + logwatch установлен"
-echo "  + Политика паролей настроена"
+# политика срока действия пароля
+chage -M 90 $SUDO_USER 2>/dev/null || true
+chage -W 7 $SUDO_USER 2>/dev/null || true
+chage -M 90 testuser 2>/dev/null || true
+chage -W 7 testuser 2>/dev/null || true
+
+echo "  + Политика паролей настроена (мин. 8 символов, смена каждые 90 дней)"
 
 # ========== ИТОГО ==========
 echo ""

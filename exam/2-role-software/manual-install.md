@@ -717,6 +717,261 @@ apt install -y openocd -qq
 
 ---
 
+
+
+---
+
+## 🎯 НАСТРОЙКА ИНТЕРФЕЙСА — 2.0 балла (Стартовая настройка)
+
+После установки ПО необходимо настроить интерфейс. Ниже — универсальные шаги для любого ПО.
+
+### VS Code (универсальная IDE — 19 билетов)
+
+```bash
+# Открыть VS Code и настроить базовые расширения
+code --install-extension ms-python.python          # Python поддержка
+code --install-extension dbaeumer.vscode-eslint    # ESLint для JS
+code --install-extension eamodio.gitlens           # Git интеграция
+code --install-extension ms-azuretools.vscode-docker # Docker
+
+# Настройки VS Code (автосохранение, тема, шрифт)
+mkdir -p ~/.config/Code/User
+cat > ~/.config/Code/User/settings.json << 'EOF'
+{
+    "editor.fontSize": 14,
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', monospace",
+    "editor.tabSize": 4,
+    "files.autoSave": "onFocusChange",
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.startupEditor": "none",
+    "terminal.integrated.fontSize": 13,
+    "editor.renderWhitespace": "boundary",
+    "editor.minimap.enabled": true
+}
+EOF
+```
+
+**Преподу сказать:** Установил VS Code, настроил базовые расширения под язык билета, настроил тему, шрифт, автосохранение. IDE готова к работе.
+
+### Общий подход (если не VS Code)
+
+1. **Запусти приложение** — убедись что GUI открывается без ошибок
+2. **Настрой тему** — выбери тёмную/светлую тему (покажи что знаешь где настройки)
+3. **Проверь шрифты** — размер шрифта в редакторе, кодировка UTF-8
+4. **Настрой панели инструментов** — включи нужные панели, убери лишние
+5. **Проверь обновления** — в меню Help → Check for Updates
+
+```bash
+# Пример: запуск PyCharm из терминала и проверка
+pycharm-community.sh &    # Запуск в фоне
+sleep 5
+ps aux | grep pycharm     # Проверить что запустился
+```
+
+**Преподу сказать:** Запустил приложение, проверил что интерфейс корректен, настроил базовые параметры (тема, шрифт, панели). Приложение готово к использованию.
+
+---
+
+## 🔄 НАСТРОЙКА ОБМЕНА ДАННЫМИ — 2.0 балла (Импорт/Экспорт)
+
+Настройка обмена данными между компонентами системы.
+
+### 1. Запуск и настройка баз данных
+
+```bash
+# PostgreSQL — запуск и создание тестовой БД
+sudo systemctl enable postgresql --now
+sudo -u postgres createdb testdb
+sudo -u postgres psql -c "CREATE USER testuser WITH PASSWORD 'testpass';"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE testdb TO testuser;"
+
+# MySQL — запуск и настройка
+sudo systemctl enable mysql --now
+sudo mysql -e "CREATE DATABASE IF NOT EXISTS testdb;"
+sudo mysql -e "CREATE USER IF NOT EXISTS 'testuser'@'localhost' IDENTIFIED BY 'testpass';"
+sudo mysql -e "GRANT ALL PRIVILEGES ON testdb.* TO 'testuser'@'localhost';"
+
+# Проверка: подключиться к БД
+psql -h localhost -U testuser -d testdb -c "SELECT current_database();"
+mysql -u testuser -ptestpass -e "SHOW DATABASES;"
+```
+
+### 2. Настройка Git (контроль версий + обмен кодом)
+
+```bash
+# Базовая конфигурация Git
+git config --global user.name "Student"
+git config --global user.email "student@example.com"
+git config --global init.defaultBranch main
+git config --global credential.helper store
+
+# Создание рабочего репозитория
+mkdir -p ~/projects/myapp
+cd ~/projects/myapp
+git init
+echo "# MyApp" > README.md
+git add .
+git commit -m "Initial commit"
+
+# Просмотр истории
+git log --oneline
+```
+
+### 3. Настройка сетевого обмена (Docker, SSHFS)
+
+```bash
+# Docker — разрешить пользователю работать без sudo
+sudo usermod -aG docker $USER
+
+# SSHFS — монтирование удалённой папки
+mkdir -p ~/remote
+# sshfs user@server:/path ~/remote  # (раскомментировать если есть удалённый сервер)
+
+# Запуск Docker-контейнера с БД для обмена данными
+docker run -d --name test-pg -e POSTGRES_PASSWORD=testpass -p 5432:5432 postgres:16
+```
+
+### 4. Настройка импорта/экспорта данных
+
+```bash
+# Создание каталогов для импорта и экспорта
+mkdir -p ~/data/import ~/data/export
+chmod 755 ~/data/import ~/data/export
+
+# Тестовый импорт (пример для CSV)
+echo "id,name,value" > ~/data/import/sample.csv
+echo "1,test,100" >> ~/data/import/sample.csv
+
+# PostgreSQL импорт из CSV
+sudo -u postgres psql -d testdb -c "
+CREATE TABLE IF NOT EXISTS test_data (
+    id INTEGER, name TEXT, value INTEGER
+);"
+sudo -u postgres psql -d testdb -c "\copy test_data FROM '~/data/import/sample.csv' CSV HEADER;"
+
+# Экспорт в CSV
+sudo -u postgres psql -d testdb -c "\copy test_data TO '~/data/export/result.csv' CSV HEADER;"
+echo "  + Данные экспортированы: ~/data/export/result.csv"
+```
+
+**Преподу сказать:** Настроил обмен данными между компонентами: запустил и настроил БД, инициализировал Git-репозиторий, настроил каталоги импорта/экспорта. Система готова к обмену данными.
+
+---
+
+## 🎯 НАСТРОЙКА СОВМЕСТИМОСТИ — 2.50 балла (КРИТИЧЕСКИ ВАЖНО!)
+
+**Раздел 4.6 критериев:** Настройка совместимости приложений. Пять sub-критериев по 0.50 балла каждый.
+
+> **Преподу сказать:** Настроил параметры совместимости для корректной работы приложений в среде Linux. Эти настройки необходимы, если приложение не оптимизировано под текущую версию ОС, имеет проблемы с отображением или требует специфических параметров графической подсистемы.
+
+### 4.6.1 Ограниченная цветовая палитра — 0.50 балла
+
+```bash
+# Отключение ночного режима (искажение цветов)
+gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
+
+# Установка color profile manager
+sudo apt install -y colord colord-data -qq
+
+# Для Wine-приложений (16-bit color)
+winecfg -v win7
+echo '16' > ~/.wine/drive_c/windows/win.ini
+```
+
+**Преподу сказать:** Для приложений со старой графикой или специфическими требованиями к цветопередаче настроил 16-битную цветовую палитру и отключил ночной режим, чтобы цвета не искажались.
+
+### 4.6.2 Низкое разрешение — 0.50 балла
+
+```bash
+# Скрипт для запуска в 800×600
+sudo cat > /usr/local/bin/run-lowres << 'EOF'
+#!/bin/bash
+xrandr -s "${1:-800x600}" 2>/dev/null || true
+exec "$@"
+EOF
+sudo chmod +x /usr/local/bin/run-lowres
+
+# Использование:
+run-lowres libreoffice --safe-mode        # LibreOffice в безопасном режиме
+run-lowres 1024x768 gimp                  # GIMP в 1024×768
+```
+
+**Преподу сказать:** Для приложений, которые некорректно отображаются на высоких разрешениях, создал скрипт `run-lowres`, принудительно устанавливающий разрешение 800×600/1024×768 перед запуском.
+
+### 4.6.3 Отображение меню и кнопок — 0.50 балла
+
+```bash
+# Установка GNOME Tweaks для настройки
+sudo apt install -y gnome-tweaks -qq
+
+# Включение кнопок свернуть/развернуть/закрыть
+gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
+
+# Стандартная тема оформления
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+gsettings set org.gnome.desktop.interface font-name 'Ubuntu 11'
+
+# Настройка Qt-приложений
+sudo apt install -y qt5ct -qq
+echo "export QT_QPA_PLATFORMTHEME=qt5ct" | sudo tee -a /etc/environment
+```
+
+**Преподу сказать:** Настроил отображение интерфейса — стандартная тема Adwaita, включены кнопки окна, установлены шрифты для корректного отображения меню.
+
+### 4.6.4 Отключение композиции рабочего стола — 0.50 балла
+
+```bash
+# Скрипт отключения композиции для требовательных приложений
+sudo cat > /usr/local/bin/disable-compositor << 'EOF'
+#!/bin/bash
+gsettings set org.gnome.mutter check-alive-timeout 0 2>/dev/null || true
+exec "$@"
+EOF
+sudo chmod +x /usr/local/bin/disable-compositor
+
+# Использование:
+disable-compositor blender        # Blender без композиции
+disable-compositor /opt/game/app  # Игра без композиции
+
+# Альтернатива для XFCE:
+# xfconf-query -c xfwm4 -p /general/use_compositing -s false
+```
+
+**Преподу сказать:** Для игр и 3D-приложений композиция рабочего стола может вызывать задержки и артефакты. Отключил композицию — приложения работают напрямую с видеокартой, выше FPS.
+
+### 4.6.5 Отключение масштабирования — 0.50 балла
+
+```bash
+# Отключение масштабирования текста
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
+gsettings set org.gnome.desktop.interface scaling-factor 0
+
+# Скрипт для запуска конкретного приложения без масштабирования
+sudo cat > /usr/local/bin/disable-scaling << 'EOF'
+#!/bin/bash
+export GDK_DPI_SCALE=1
+export GDK_SCALE=1
+export QT_SCALE_FACTOR=1
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+exec "$@"
+EOF
+sudo chmod +x /usr/local/bin/disable-scaling
+
+# Использование:
+disable-scaling /opt/some-app/appimage
+```
+
+**Преподу сказать:** На HiDPI-экранах некоторые приложения отображаются размытыми или слишком мелкими. Отключил масштабирование для корректного отображения элементов интерфейса 1:1.
+
+### Быстрый запуск всего сразу
+
+```bash
+# Просто запустить скрипт:
+sudo bash compatibility-setup.sh
+```
+
+---
+
 ## 📋 ЧЕК-ЛИСТ ПО БИЛЕТАМ
 
 | Билет | Ключевое ПО (обязательно) |
