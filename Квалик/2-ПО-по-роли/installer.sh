@@ -63,12 +63,12 @@ pkg_ide "PyCharm Community" "snap list pycharm-community 2>/dev/null"      "snap
 pkg_ide "IntelliJ IDEA"     "snap list intellij-idea-community 2>/dev/null""snap install intellij-idea-community --classic" "IDE для Java, Kotlin"
 pkg_ide "Eclipse IDE"       "command -v eclipse 2>/dev/null"               "$PM install -y eclipse 2>/dev/null || snap install eclipse --classic" "IDE для Java, C/C++, PHP"
 pkg_ide "Android Studio"    "command -v android-studio 2>/dev/null"        "snap install android-studio --classic" "Разработка Android-приложений"
-pkg_ide "Code::Blocks"      "command -v codeblocks 2>/dev/null"            "$PM install -y codeblocks -qq" "IDE для C/C++"
-pkg_ide "Arduino IDE"       "command -v arduino 2>/dev/null"               "$PM install -y arduino -qq" "Разработка для Arduino/MCU"
+pkg_ide "Code::Blocks"      "command -v codeblocks 2>/dev/null"            "$PM install -y codeblocks -qq 2>/dev/null || snap install codeblocks --classic" "IDE для C/C++"
+pkg_ide "Arduino IDE"       "command -v arduino 2>/dev/null"               "$PM install -y arduino -qq 2>/dev/null || snap install arduino" "Разработка для Arduino/MCU"
 pkg_ide "Jupyter Lab"       "command -v jupyter-lab 2>/dev/null"           "pip3 install jupyterlab -q" "Интерактивная среда для Data Science"
-pkg_ide "Qt Creator"        "command -v qtcreator 2>/dev/null"             "$PM install -y qtcreator -qq" "IDE для C++/Qt приложений"
-pkg_ide "NetBeans"          "command -v netbeans 2>/dev/null"              "$PM install -y netbeans -qq" "IDE для Java, PHP, C/C++"
-pkg_ide "MonoDevelop"       "command -v monodevelop 2>/dev/null"           "$PM install -y monodevelop -qq" "IDE для .NET/C# под Linux"
+pkg_ide "Qt Creator"        "command -v qtcreator 2>/dev/null"             "$PM install -y qtcreator -qq 2>/dev/null || snap install qtcreator --classic" "IDE для C++/Qt приложений"
+pkg_ide "NetBeans"          "command -v netbeans 2>/dev/null"              "$PM install -y netbeans -qq 2>/dev/null || snap install netbeans --classic" "IDE для Java, PHP, C/C++"
+pkg_ide "MonoDevelop"       "command -v monodevelop 2>/dev/null"           "snap install monodevelop --classic 2>/dev/null || echo '  MonoDevelop не поддерживается, используй VS Code'" "IDE для .NET/C# под Linux"
 pkg_ide "CLion"             "snap list clion 2>/dev/null"                  "snap install clion --classic" "IDE для C/C++ от JetBrains"
 pkg_ide "WebStorm"          "snap list webstorm 2>/dev/null"               "snap install webstorm --classic" "IDE для JS/TS от JetBrains"
 
@@ -97,7 +97,7 @@ pkg_db "MariaDB"             "command -v mariadb 2>/dev/null"               "$PM
 pkg_db "MongoDB"             "command -v mongod 2>/dev/null"                "wget -qO /tmp/mongo.asc 'https://www.mongodb.org/static/pgp/server-7.0.asc' && gpg --dearmor -o /usr/share/keyrings/mongodb.gpg /tmp/mongo.asc 2>/dev/null; echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/mongodb.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse' > /etc/apt/sources.list.d/mongodb.list && $PM update -qq && $PM install -y mongodb-org -qq" "NoSQL (SPA, веб-сервисы)"
 pkg_db "Redis"               "command -v redis-server"                      "$PM install -y redis -qq" "Кэш/Broker (чат-боты, онлайн-игры)"
 pkg_db "phpMyAdmin"          "dpkg -l phpmyadmin 2>/dev/null | grep -q ^ii" "$PM install -y phpmyadmin -qq" "Веб-админка для MySQL"
-pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.10-linux-amd64.deb' && dpkg -i /tmp/influxdb.deb 2>/dev/null" "Time-series БД для телеметрии"
+pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.11-linux-amd64.deb' && dpkg -i /tmp/influxdb.deb 2>/dev/null || snap install influxdb" "Time-series БД для телеметрии"
 
 # --- 4. Графические редакторы ---
 add_cat "Графические редакторы"
@@ -142,7 +142,7 @@ add_cat "Тестирование и API"
 cat7_name=(); cat7_check=(); cat7_install=(); cat7_desc=()
 pkg_test() { cat7_name+=("$1"); cat7_check+=("$2"); cat7_install+=("$3"); cat7_desc+=("$4"); }
 pkg_test "Postman"            "snap list postman 2>/dev/null"                "snap install postman" "GUI клиент для тестирования API"
-pkg_test "Insomnia"           "command -v insomnia 2>/dev/null"              "wget -qO /tmp/insomnia.deb 'https://downloads.insomnia.rest/linux/releases/Insomnia.Core-10.3.0.deb' && dpkg -i /tmp/insomnia.deb 2>/dev/null; $PM install -f -y -qq" "REST/GraphQL клиент (документация!)"
+pkg_test "Insomnia"           "command -v insomnia 2>/dev/null"              "snap install insomnia && sleep 2" "REST/GraphQL клиент (документация!)"
 pkg_test "Selenium"           "python3 -c 'import selenium' 2>/dev/null"    "pip3 install selenium -q" "Автоматизация браузера"
 pkg_test "JMeter"             "command -v jmeter"                            "$PM install -y jmeter -qq" "Нагрузочное тестирование"
 pkg_test "k6"                 "command -v k6"                                "$PM install -y k6 -qq 2>/dev/null || (curl -fsSL https://dl.k6.io/key.gpg | gpg --dearmor -o /usr/share/keyrings/k6.gpg 2>/dev/null && echo 'deb [signed-by=/usr/share/keyrings/k6.gpg] https://dl.k6.io/deb stable main' > /etc/apt/sources.list.d/k6.list && $PM update -qq && $PM install -y k6 -qq)" "Нагрузочное тестирование API"
@@ -173,7 +173,7 @@ pkg_mon "Prometheus"          "command -v prometheus 2>/dev/null"            "wg
 pkg_mon "Netdata"             "command -v netdata 2>/dev/null"               "bash <(curl -Ss https://my-netdata.io/kickstart.sh) -y 2>/dev/null" "Мониторинг системы в реальном времени"
 pkg_mon "Jenkins"             "command -v jenkins 2>/dev/null"               "wget -qO /tmp/jenkins.deb 'https://get.jenkins.io/debian-stable/jenkins_2.479.3_all.deb' && dpkg -i /tmp/jenkins.deb 2>/dev/null; $PM install -f -y -qq" "CI/CD сервер"
 pkg_mon "HAProxy"             "command -v haproxy"                           "$PM install -y haproxy -qq" "Балансировщик нагрузки"
-pkg_mon "Elasticsearch"       "command -v elasticsearch 2>/dev/null"         "wget -qO /tmp/es.deb 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-amd64.deb' && dpkg -i /tmp/es.deb 2>/dev/null" "Поисковая БД (логи, телеметрия)"
+pkg_mon "Elasticsearch"       "command -v elasticsearch 2>/dev/null"         "wget -qO /tmp/es.deb 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.17.0-amd64.deb' && dpkg -i /tmp/es.deb 2>/dev/null || echo '  Установи вручную: wget ... && dpkg -i'" "Поисковая БД (логи, телеметрия)"
 
 # --- 10. Безопасность ---
 add_cat "Безопасность"
@@ -189,7 +189,7 @@ pkg_sec "nmap"                "command -v nmap"                              "$P
 pkg_sec "auditd"              "command -v auditctl"                          "$PM install -y auditd audispd-plugins -qq" "Система аудита (журнал событий безопасности)"
 pkg_sec "OpenSSL"             "command -v openssl"                           "$PM install -y openssl -qq" "Шифрование и сертификаты"
 pkg_sec "SonarQube Scanner"   "command -v sonar-scanner 2>/dev/null"         "wget -qO /tmp/sonar.zip 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip' && unzip -qo /tmp/sonar.zip -d /opt/ 2>/dev/null; ln -sf /opt/sonar-scanner-*/bin/sonar-scanner /usr/local/bin/ 2>/dev/null" "Статический анализ кода (SAST)"
-pkg_sec "Trivy"               "command -v trivy 2>/dev/null"                 "wget -qO /tmp/trivy.deb 'https://github.com/aquasecurity/trivy/releases/download/v0.56.2/trivy_0.56.2_Linux-64bit.deb' && dpkg -i /tmp/trivy.deb 2>/dev/null" "Сканирование уязвимостей"
+pkg_sec "Trivy"               "command -v trivy 2>/dev/null"                 "wget -qO /tmp/trivy.deb 'https://github.com/aquasecurity/trivy/releases/download/v0.58.2/trivy_0.58.2_Linux-64bit.deb' && dpkg -i /tmp/trivy.deb 2>/dev/null || snap install trivy" "Сканирование уязвимостей"
 
 # --- 11. Утилиты ---
 add_cat "Утилиты и базовое ПО"
@@ -483,15 +483,27 @@ install_selected() {
 
 # Первичная настройка
 echo -e "${GRAY}Инициализация...${NC}"
+# Включаем universe репозиторий (там много IDE)
+$PM install -y software-properties-common -qq &>/dev/null
+add-apt-repository -y universe &>/dev/null || true
+$PM update -qq 2>/dev/null
 # Настраиваем Git если ещё нет
 if command -v git &>/dev/null; then
     git config --global user.name "Student" &>/dev/null
     git config --global user.email "student@example.com" &>/dev/null
     git config --global init.defaultBranch main &>/dev/null
 fi
-# Убедимся что pip3 есть
+# Убеждаемся что pip3 есть
 if ! command -v pip3 &>/dev/null; then
     $PM install -y python3-pip -qq &>/dev/null
+fi
+# Убеждаемся что snap есть
+if ! command -v snap &>/dev/null; then
+    $PM install -y snapd -qq &>/dev/null
+fi
+# Добавляем snap/bin в PATH для sudo
+if [[ ":$PATH:" != *":/snap/bin:"* ]]; then
+    export PATH="$PATH:/snap/bin:/var/lib/snapd/snap/bin"
 fi
 
 clear_screen
