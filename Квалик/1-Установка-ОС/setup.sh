@@ -42,23 +42,22 @@ systemctl status ssh --no-pager | head -5
 ss -tlnp | grep :22
 
 echo "  + SSH установлен и запущен"
+echo "  (для подключения с Windows используй PuTTY: IP=$(hostname -I | awk '{print $1}') порт 22)"
 
 # ========== 3. УДАЛЕННЫЙ ДОСТУП ==========
 echo ""
-echo "[3/13] Настройка удаленного доступа (xrdp)..."
+echo "[3/13] Настройка удаленного доступа..."
+echo ""
+echo "  Основной вариант: SSH уже настроен в п.2 - подключаемся через PuTTY"
+echo "  Запасной (если препод хочет графику): sudo apt install -y xrdp"
+echo "  и подключайся через mstsc (Windows Remote Desktop)"
 
-apt install -y xrdp -qq
-systemctl enable xrdp --now
-systemctl status xrdp --no-pager | head -5
-
-# добавляем пользователя в группу xrdp
-usermod -aG xrdp $SUDO_USER
-
-# настройка xrdp на нормальный рабочий стол
-sed -i 's/port=3389/port=3389/g' /etc/xrdp/xrdp.ini
-adduser xrdp ssl-cert 2>/dev/null
-
-echo "  + XRDP готов, порт 3389"
+# запасной вариант - закомментирован, разблокировать если препод попросит RDP
+# apt install -y xrdp -qq
+# systemctl enable xrdp --now
+# usermod -aG xrdp $SUDO_USER
+# adduser xrdp ssl-cert 2>/dev/null
+# echo "  + XRDP готов, порт 3389"
 
 # ========== 4. СЕТЕВОЙ ИНТЕРФЕЙС ==========
 echo ""
