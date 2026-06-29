@@ -126,6 +126,7 @@ apt install -y \
     sshfs \
     build-essential \
     python3-pip \
+    libreoffice \
     -qq
 
 echo "  + Базовое ПО установлено"

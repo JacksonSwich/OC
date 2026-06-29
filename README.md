@@ -18,9 +18,11 @@ exam/
 ├── 2-role-software/        # Этап 2 — Установка ПО по роли (9.00 баллов)
 │   ├── installer.sh        # Интерактивный установщик (12 категорий, 29 билетов)
 │   ├── compatibility-setup.sh  # Настройка совместимости (2.50 балла)
-│   ├── manual-install.md   # Команды ручной установки
-│   ├── tickets-summary.md  # Сводка ПО по всем 29 билетам
-│   └── exam-guide.md       # Ответы для защиты
+│   │
+│   └── guides/             # Документация этапа 2
+│       ├── manual-install.md   # Команды ручной установки по категориям
+│       ├── tickets-summary.md  # Сводка ПО по всем 29 билетам
+│       └── exam-guide.md       # Ответы для защиты (что говорить)
 │
 └── 3-documentation/        # Этап 3 — Документация (6.50 баллов)
     ├── exam-guide.md       # Ответы для защиты
@@ -58,6 +60,7 @@ sudo bash exam/1-os-install/setup.sh
 # Этап 2 — установка ПО + совместимость
 sudo bash exam/2-role-software/installer.sh
 sudo bash exam/2-role-software/compatibility-setup.sh
+# См. также guides/ — manual-install.md, tickets-summary.md, exam-guide.md
 
 # Этап 3 — генерация документации (выбери свой ГОСТ)
 cd exam/3-documentation/gost-59795-2021   # или gost-19.505-79

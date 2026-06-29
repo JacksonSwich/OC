@@ -330,7 +330,7 @@ show_main_menu() {
                 echo -e "${RED}Файл compatibility-setup.sh не найден!${NC}"
                 echo -e "${YELLOW}Загрузи его или запусти вручную:${NC}"
                 echo -e "  ${WHITE}wget -qO compatibility-setup.sh <url> && sudo bash compatibility-setup.sh${NC}"
-                echo -e "${YELLOW}Либо создай и выполни настройки из раздела 'Настройка совместимости' в manual-install.md${NC}"
+                echo -e "${YELLOW}Либо создай и выполни настройки из раздела 'Настройка совместимости' в guides/manual-install.md${NC}"
             fi
             echo ""
             printf "${GRAY}Нажми Enter чтобы продолжить...${NC}"
