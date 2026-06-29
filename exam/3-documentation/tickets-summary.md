@@ -3,7 +3,7 @@
 ## Базовое ПО (устанавливается для всех билетов)
 
 > Следующие утилиты входят в базовую инфраструктуру и ставятся независимо от билета:
-> Git, htop, curl/wget, screen + tmux, Vim + Nano, p7zip (7-Zip), tree, net-tools (ifconfig), CUPS + cups-pdf, Timeshift, build-essential (gcc, make), FFmpeg, hardinfo, lm-sensors, LibreOffice.
+> **Git, htop, curl/wget, screen + tmux, Vim + Nano, p7zip (7-Zip), tree, net-tools (ifconfig), CUPS + cups-pdf, Timeshift, build-essential (gcc, make), FFmpeg, hardinfo, lm-sensors, LibreOffice, sshfs.**
 
 ---
 
@@ -13,8 +13,9 @@
 |-----------|----|
 | IDE | VS Code, PyCharm, WebStorm |
 | Языки | Python, Node.js |
-| СУБД | PostgreSQL, MySQL, SQLite |
-| Тестирование API | Postman / Insomnia |
+| Веб-фреймворки | Django, Flask, Express.js, Angular CLI, React CLI, Vue CLI |
+| СУБД | PostgreSQL, MySQL, MariaDB, SQLite, phpMyAdmin |
+| Тестирование API | Postman / Insomnia, Newman, Swagger CLI |
 | Безопасность | auditd, ufw, WireGuard, Fail2ban, nmap, OpenSSL |
 
 ---
@@ -32,8 +33,8 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | CLion |
-| Графика | GIMP, Inkscape, Blender |
+| IDE | CLion, Code::Blocks, Qt Creator |
+| Графика | GIMP, Inkscape, Blender, Krita |
 | Специализированное | Open3D |
 
 ---
@@ -43,9 +44,10 @@
 | Категория | ПО |
 |-----------|----|
 | IDE | VS Code, Eclipse |
-| Контейнеризация | Docker, Docker Compose, Minikube, kubectl |
-| Мониторинг / CI/CD | Prometheus + Grafana, Jenkins, Netdata |
-| Безопасность | auditd, ufw, nmap |
+| Языки | Go, Rust |
+| Контейнеризация / IaC | Docker, Docker Compose, Minikube, kubectl, Vagrant |
+| Мониторинг / CI/CD | Prometheus + Grafana, Jenkins, Netdata, HAProxy |
+| Безопасность | auditd, ufw, nmap, OpenVPN, Wireshark |
 
 ---
 
@@ -53,9 +55,9 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | IntelliJ IDEA, Eclipse |
+| IDE | IntelliJ IDEA, Eclipse, NetBeans |
 | Языки | OpenJDK |
-| СУБД | PostgreSQL, MySQL |
+| СУБД | PostgreSQL, MySQL, MariaDB, phpMyAdmin |
 | Безопасность | auditd, ufw, ClamAV |
 
 ---
@@ -66,6 +68,7 @@
 |-----------|----|
 | IDE | VS Code, WebStorm |
 | Языки | Node.js |
+| Веб-фреймворки | Angular CLI, React CLI, Vue CLI, Django, Flask |
 | СУБД | SQLite |
 | Безопасность | ClamAV |
 
@@ -77,7 +80,7 @@
 |-----------|----|
 | IDE | VS Code, PyCharm, Jupyter Lab |
 | Языки | Python |
-| ML/AI | TensorFlow / PyTorch, scikit-learn |
+| ML/AI | TensorFlow / PyTorch, scikit-learn, Pandas / NumPy, Matplotlib / Seaborn, HuggingFace Transformers |
 
 ---
 
@@ -87,8 +90,10 @@
 |-----------|----|
 | IDE | VS Code, WebStorm |
 | Языки | Node.js |
-| СУБД | PostgreSQL, MySQL, SQLite, MongoDB, Redis |
-| Тестирование API | Postman / Insomnia |
+| Веб-фреймворки | Angular CLI, React CLI, Vue CLI, Express.js |
+| СУБД | PostgreSQL, MySQL, MariaDB, SQLite, MongoDB, Redis, phpMyAdmin |
+| Тестирование API | Postman / Insomnia, Newman, Swagger CLI |
+| Десктоп | Electron |
 
 ---
 
@@ -96,6 +101,7 @@
 
 | Категория | ПО |
 |-----------|----|
+| IDE | MonoDevelop |
 | Языки | .NET SDK |
 | Контейнеризация | Docker, Docker Compose |
 | Безопасность | SonarQube, Trivy |
@@ -106,12 +112,12 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code, Eclipse |
+| IDE | VS Code, Eclipse, Arduino IDE, Qt Creator |
 | Языки | Python |
 | СУБД | SQLite |
 | Мониторинг | Prometheus + Grafana |
 | Безопасность | OpenSSL |
-| Специализированное | Mosquitto (MQTT) |
+| Специализированное | Mosquitto (MQTT), OpenOCD |
 
 ---
 
@@ -119,7 +125,9 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code, Eclipse |
+| IDE | VS Code, Eclipse, NetBeans |
+| Языки | OpenJDK |
+| СУБД | PostgreSQL, MySQL, MariaDB, SQLite, phpMyAdmin |
 
 ---
 
@@ -127,7 +135,7 @@
 
 | Категория | ПО |
 |-----------|----|
-| Графика | GIMP, Inkscape, Blender |
+| Графика | GIMP, Inkscape, Blender, Krita |
 | Специализированное | Open3D |
 
 ---
@@ -136,9 +144,10 @@
 
 | Категория | ПО |
 |-----------|----|
-| Контейнеризация | Docker, Docker Compose, Minikube, kubectl |
+| Языки | Go, Rust |
+| Контейнеризация / IaC | Docker, Docker Compose, Minikube, kubectl, Vagrant |
 | CI/CD | Jenkins |
-| Безопасность | OWASP ZAP, auditd, ufw, WireGuard, Fail2ban, nmap, SonarQube, Trivy |
+| Безопасность | OWASP ZAP, auditd, ufw, WireGuard, Fail2ban, nmap, SonarQube, Trivy, OpenVPN, Wireshark |
 
 ---
 
@@ -148,11 +157,11 @@
 |-----------|----|
 | IDE | VS Code, PyCharm |
 | Языки | Python, OpenJDK |
-| Тестирование API | Postman / Insomnia |
+| Тестирование API | Postman / Insomnia, Newman, Swagger CLI |
 | Нагрузочное тестирование | JMeter / k6 / Locust |
 | Автоматизация браузера | Selenium |
 | Безопасность | OWASP ZAP |
-| Виртуализация | KVM / VirtualBox |
+| Виртуализация | KVM / VirtualBox, QEMU |
 
 ---
 
@@ -160,10 +169,11 @@
 
 | Категория | ПО |
 |-----------|----|
-| Контейнеризация | Docker |
-| Виртуализация | KVM / VirtualBox |
-| Мониторинг | Prometheus + Grafana, Netdata |
-| Безопасность | auditd, ufw, WireGuard, nmap |
+| Языки | Go, Rust |
+| Контейнеризация / IaC | Docker, Vagrant |
+| Виртуализация | KVM / VirtualBox, QEMU |
+| Мониторинг | Prometheus + Grafana, Netdata, HAProxy |
+| Безопасность | auditd, ufw, WireGuard, nmap, OpenVPN, Wireshark |
 | Специализированное | Ansible |
 
 ---
@@ -174,8 +184,9 @@
 |-----------|----|
 | IDE | VS Code |
 | Языки | Python |
-| СУБД | PostgreSQL |
+| СУБД | PostgreSQL, MariaDB |
 | Графика | GIMP |
+| ML/AI (аналитика) | Pandas / NumPy, Matplotlib / Seaborn |
 | Безопасность | ClamAV, OpenSSL, auditd |
 | Специализированное | R + RStudio |
 
@@ -185,8 +196,8 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code |
-| Специализированное | can-utils |
+| IDE | VS Code, Qt Creator |
+| Специализированное | can-utils, OpenOCD |
 
 ---
 
@@ -194,9 +205,9 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | IntelliJ IDEA |
+| IDE | IntelliJ IDEA, NetBeans |
 | Языки | OpenJDK |
-| СУБД | PostgreSQL, MySQL |
+| СУБД | PostgreSQL, MySQL, MariaDB, phpMyAdmin |
 | Безопасность | auditd, ufw, ClamAV, OpenSSL |
 
 ---
@@ -205,10 +216,10 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code, CLion |
+| IDE | VS Code, CLion, Code::Blocks, Qt Creator |
 | Языки | Python |
 | СУБД | Redis |
-| Графика | Blender |
+| Графика | Blender, Krita |
 | Контейнеризация | Docker |
 | Мониторинг | Netdata, Prometheus + Grafana |
 | Нагрузочное тестирование | JMeter / k6 / Locust |
@@ -223,7 +234,8 @@
 | IDE | VS Code, PyCharm, CLion |
 | Языки | Python |
 | Графика | GIMP |
-| ML/AI | TensorFlow / PyTorch, OpenCV |
+| ML/AI | TensorFlow / PyTorch, OpenCV, Pandas / NumPy, Matplotlib / Seaborn, Ultralytics (YOLO) |
+| Обработка видео | GStreamer |
 
 ---
 
@@ -234,7 +246,7 @@
 | IDE | VS Code, PyCharm |
 | Языки | Python |
 | Графика | GIMP, Inkscape |
-| ML/AI (NLP) | NLTK / spaCy |
+| ML/AI | NLTK / spaCy, HuggingFace Transformers, Pandas / NumPy, Matplotlib / Seaborn |
 | Аудио-обработка | Librosa |
 
 ---
@@ -243,9 +255,9 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code |
+| IDE | VS Code, Arduino IDE, Qt Creator |
 | Языки | Python |
-| Специализированное | Mosquitto (MQTT) |
+| Специализированное | Mosquitto (MQTT), OpenOCD |
 
 ---
 
@@ -253,7 +265,7 @@
 
 | Категория | ПО |
 |-----------|----|
-| Графика | GIMP, Inkscape, Blender |
+| Графика | GIMP, Inkscape, Blender, Krita |
 | Специализированное | Open3D |
 
 ---
@@ -265,7 +277,7 @@
 | IDE | VS Code, PyCharm |
 | Языки | Python |
 | СУБД | Redis |
-| ML/AI | TensorFlow / PyTorch, scikit-learn, NLTK / spaCy |
+| ML/AI | TensorFlow / PyTorch, scikit-learn, NLTK / spaCy, HuggingFace Transformers, Pandas / NumPy, Matplotlib / Seaborn |
 | Специализированное | Rasa |
 
 ---
@@ -274,9 +286,10 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | VS Code, CLion |
+| IDE | VS Code, CLion, Qt Creator |
 | СУБД | InfluxDB |
 | Мониторинг | Prometheus + Grafana, ELK (Elasticsearch + Kibana) |
+| Обработка | GStreamer |
 
 ---
 
@@ -287,7 +300,8 @@
 | IDE | VS Code, PyCharm |
 | Языки | Python |
 | Графика | GIMP |
-| ML/AI | TensorFlow / PyTorch, OpenCV |
+| ML/AI | TensorFlow / PyTorch, OpenCV, Pandas / NumPy, Matplotlib / Seaborn, Ultralytics (YOLO) |
+| Обработка видео | GStreamer |
 
 ---
 
@@ -295,9 +309,9 @@
 
 | Категория | ПО |
 |-----------|----|
-| IDE | IntelliJ IDEA, Eclipse |
+| IDE | IntelliJ IDEA, Eclipse, NetBeans |
 | Языки | OpenJDK |
-| СУБД | PostgreSQL, MySQL, SQLite |
+| СУБД | PostgreSQL, MySQL, MariaDB, SQLite, phpMyAdmin |
 
 ---
 
@@ -307,9 +321,10 @@
 |-----------|----|
 | IDE | VS Code, PyCharm |
 | Языки | Python |
-| СУБД | PostgreSQL |
-| ML/AI | OpenCV, scikit-learn |
+| СУБД | PostgreSQL, MariaDB |
+| ML/AI | OpenCV, scikit-learn, Pandas / NumPy, Matplotlib / Seaborn, Ultralytics (YOLO) |
 | Мониторинг | Prometheus + Grafana, ELK (Elasticsearch + Kibana) |
+| Обработка | GStreamer |
 
 ---
 
@@ -319,7 +334,7 @@
 |-----------|----|
 | IDE | IntelliJ IDEA, Eclipse |
 | Языки | OpenJDK |
-| ML/AI | scikit-learn |
+| ML/AI | scikit-learn, Pandas / NumPy, Matplotlib / Seaborn |
 
 ---
 
