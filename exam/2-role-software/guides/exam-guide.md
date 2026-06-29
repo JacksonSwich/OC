@@ -509,7 +509,6 @@ sudo bash compatibility-setup.sh
 | **Inkscape** | `inkscape &` | `inkscape --version` |
 | **Blender** | `blender &` | `blender --version \| head -1` |
 | **Krita** | `krita &` | `krita --version` |
-| **GIMP** | `gimp &` | `gimp --version` |
 
 ### 5. 🧪 Тестирование и API
 

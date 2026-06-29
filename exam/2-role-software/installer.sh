@@ -234,23 +234,14 @@ PKG_SELECTED=()
 # Загрузка категории по номеру
 load_category() {
     local n=$1
-    PKG_NAMES=(); PKG_CHECKS=(); PKG_INSTALLS=(); PKG_DESCS=(); PKG_SELECTED=()
-    local var_name="cat${n}_name[@]"
-    for i in "${!var_name}"; do
-        eval "PKG_NAMES+=(\"\$i\")"
-    done
-    var_name="cat${n}_check[@]"
-    for i in "${!var_name}"; do
-        eval "PKG_CHECKS+=(\"\$i\")"
-    done
-    var_name="cat${n}_install[@]"
-    for i in "${!var_name}"; do
-        eval "PKG_INSTALLS+=(\"\$i\")"
-    done
-    var_name="cat${n}_desc[@]"
-    for i in "${!var_name}"; do
-        eval "PKG_DESCS+=(\"\$i\")"
-    done
+    local -n names="cat${n}_name"
+    local -n checks="cat${n}_check"
+    local -n installs="cat${n}_install"
+    local -n descs="cat${n}_desc"
+    PKG_NAMES=("${names[@]}")
+    PKG_CHECKS=("${checks[@]}")
+    PKG_INSTALLS=("${installs[@]}")
+    PKG_DESCS=("${descs[@]}")
     # Инициализируем выбор
     PKG_SELECTED=()
     for ((i=0; i<${#PKG_NAMES[@]}; i++)); do
