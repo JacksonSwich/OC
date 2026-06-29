@@ -11,7 +11,7 @@
     + Приложения (п. 2.6)
 
 Использование:
-    python3 generate-template-19.505-79.py [название ПО] [--output файл.odt]
+    python3 generate-template.py [название ПО] [--output файл.odt]
 
 Зависимости:
     pip install odfpy
@@ -32,7 +32,7 @@ from odf.number import DateStyle, NumberStyle
 # Parse arguments: python3 script.py [name] [output.odt]
 # Also supports: python3 script.py [name] --output [output.odt]
 APP_NAME = "[Название ПО]"
-OUTPUT_FILE = "user-guide-19.505-79-template.odt"
+OUTPUT_FILE = "user-guide-template.odt"
 
 if len(sys.argv) > 1:
     if sys.argv[1] != "--output":
