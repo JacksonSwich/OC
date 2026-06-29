@@ -154,9 +154,10 @@ echo "  + Кэш шрифтов обновлён"
 echo ""
 echo "[6b/14] Установка Python-пакетов..."
 
-pip3 install odfpy -q
+apt install -y python3-odf -qq
+pip3 install odfpy -q 2>/dev/null || true
 
-echo "  + odfpy установлен (генерация .odt по ГОСТ)"
+echo "  + python3-odf / odfpy установлен (генерация .odt по ГОСТ)"
 
 # ========== 7. ВИРТУАЛЬНЫЙ ПРИНТЕР ==========
 echo ""
