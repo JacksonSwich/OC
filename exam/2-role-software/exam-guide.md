@@ -458,6 +458,180 @@ sudo bash compatibility-setup.sh
 
 ---
 
+## 🖥️ ДЕМОНСТРАЦИЯ РАБОТЫ ПО
+
+Когда препод просит **"покажи что программа работает"** — используй эти команды.
+
+### 1. 🔥 IDE и редакторы кода
+
+| Программа | Запуск GUI | Проверка версии |
+|-----------|-----------|----------------|
+| **VS Code** | `code &` | `code --version` |
+| **PyCharm** | `pycharm-community &` | `snap list pycharm-community` или `ls /opt/pycharm-community/` |
+| **IntelliJ IDEA** | `intellij-idea-community &` | `snap list intellij-idea-community` |
+| **Eclipse** | `eclipse &` | `eclipse --version 2>/dev/null \| head -1` |
+| **Android Studio** | `android-studio &` | `snap list android-studio` |
+| **CLion** | `clion &` | `snap list clion` |
+| **WebStorm** | `webstorm &` | `snap list webstorm` |
+| **Jupyter Lab** | `jupyter-lab &` | `jupyter-lab --version` |
+| **Qt Creator** | `qtcreator &` | `apt list --installed 2>/dev/null \| grep qtcreator` |
+| **NetBeans** | `netbeans &` | `snap list netbeans` |
+| **Arduino IDE** | `arduino &` | `arduino --version` |
+
+### 2. 🧰 Языки и SDK
+
+| Программа | Проверка |
+|-----------|---------|
+| **Python 3** | `python3 --version && pip3 --version` |
+| **OpenJDK** | `java -version 2>&1 \| head -3` |
+| **Node.js** | `node --version && npm --version` |
+| **Flutter** | `flutter --version 2>/dev/null \| head -3` |
+| **.NET** | `dotnet --version 2>/dev/null && dotnet --list-sdks 2>/dev/null` |
+| **Go** | `go version` |
+| **Rust** | `rustc --version && cargo --version` |
+
+### 3. 🗄️ СУБД
+
+| Программа | Запуск/Проверка |
+|-----------|----------------|
+| **PostgreSQL** | `systemctl status postgresql --no-pager \| head -5` → `sudo -u postgres psql -c "SELECT version();"` |
+| **MySQL** | `systemctl status mysql --no-pager \| head -5` → `mysql -u root -e "SELECT VERSION();" 2>/dev/null` |
+| **SQLite** | `sqlite3 --version` → `sqlite3 /tmp/test.db ".tables"` |
+| **MongoDB** | `mongod --version \| head -1` (если сервер: `systemctl status mongod`) |
+| **Redis** | `redis-server --version` → `redis-cli ping` (ответ: PONG) |
+| **InfluxDB** | `influxd version 2>/dev/null \| head -1` |
+
+### 4. 🎨 Графика
+
+| Программа | Запуск GUI | Проверка |
+|-----------|-----------|----------|
+| **GIMP** | `gimp &` | `gimp --version` |
+| **Inkscape** | `inkscape &` | `inkscape --version` |
+| **Blender** | `blender &` | `blender --version \| head -1` |
+| **Krita** | `krita &` | `krita --version` |
+| **GIMP** | `gimp &` | `gimp --version` |
+
+### 5. 🧪 Тестирование и API
+
+| Программа | Запуск/Проверка |
+|-----------|----------------|
+| **Postman** | `postman &` или `postman -v` (если через snap) |
+| **Insomnia** | `insomnia &` или `insomnia --version` |
+| **JMeter** | `jmeter --version 2>/dev/null \| head -2` (GUI: `jmeter &`) |
+| **Selenium** | `pip3 show selenium \| grep Version` (драйвер: `chromedriver --version`) |
+
+### 6. 🐳 Контейнеризация
+
+| Программа | Проверка |
+|-----------|---------|
+| **Docker** | `docker --version && docker run hello-world 2>&1 \| tail -3` |
+| **Docker Compose** | `docker compose version` |
+| **Minikube** | `minikube version` → `minikube status 2>/dev/null` |
+| **kubectl** | `kubectl version --client --short 2>/dev/null` |
+| **KVM** | `virt-host-validate qemu 2>/dev/null \| head -3` |
+| **Vagrant** | `vagrant --version` |
+
+### 7. 📊 Мониторинг и CI/CD
+
+| Программа | Проверка |
+|-----------|---------|
+| **Prometheus** | `prometheus --version 2>/dev/null \| head -1` или `systemctl status prometheus` |
+| **Grafana** | `grafana-server --version 2>/dev/null` или `systemctl status grafana-server` |
+| **Jenkins** | `systemctl status jenkins --no-pager \| head -5` |
+| **Netdata** | `systemctl status netdata --no-pager \| head -5` |
+| **Elasticsearch** | `curl -s http://localhost:9200/ 2>/dev/null \| head -1` |
+
+### 8. 🛡️ Безопасность
+
+| Программа | Проверка |
+|-----------|---------|
+| **auditd** | `systemctl status auditd --no-pager \| head -3` → `auditctl -l` (список правил) |
+| **ufw** | `ufw status verbose` (если не active — `ufw enable && ufw status`) |
+| **WireGuard** | `wg show` (показать туннели) |
+| **Fail2ban** | `fail2ban-client status 2>/dev/null` |
+| **ClamAV** | `clamscan --version` → `clamscan /tmp/test.txt 2>/dev/null` (антивирус) |
+| **nmap** | `nmap --version \| head -1` → `nmap -sn 127.0.0.1/24 2>/dev/null \| tail -3` |
+| **OpenSSL** | `openssl version` |
+| **SonarQube** | `sonar-scanner --version 2>/dev/null \| head -1` |
+| **Trivy** | `trivy --version 2>/dev/null \| head -1` |
+| **OWASP ZAP** | `zap.sh -version 2>/dev/null` (GUI: `zap.sh &`) |
+
+### 9. 🛠️ Утилиты
+
+| Программа | Проверка |
+|-----------|---------|
+| **Git** | `git --version && git config --list \| head -5` |
+| **htop** | `htop --version` (запуск: `htop`, выход: `F10` или `q`) |
+| **CUPS** | `systemctl status cups --no-pager \| head -3` → `lpstat -t` |
+| **Timeshift** | `timeshift --version` → `timeshift --list` |
+| **curl/wget** | `curl --version \| head -1` и `wget --version \| head -1` |
+| **tree** | `tree --version` |
+
+### 🌐 Веб-интерфейсы (браузер)
+
+Если серверное приложение имеет веб-морду — показывай через браузер:
+
+| Программа | URL | Логин/Пароль (по умолчанию) |
+|-----------|-----|---------------------------|
+| **Grafana** | `http://localhost:3000` | **admin / admin** (или `admin / grafana`) |
+| **Jenkins** | `http://localhost:8080` | Пароль в `/var/lib/jenkins/secrets/initialAdminPassword` |
+| **Prometheus** | `http://localhost:9090` | без авторизации |
+| **Netdata** | `http://localhost:19999` | без авторизации |
+| **Kibana** | `http://localhost:5601` | без авторизации (если не настроен Elastic auth) |
+| **Elasticsearch** | `http://localhost:9200` | без авторизации (покажи JSON-ответ) |
+| **SonarQube** | `http://localhost:9000` | **admin / admin** |
+| **CUPS** | `http://localhost:631` | без авторизации |
+| **Jupyter Lab** | `http://localhost:8888` | токен в терминале при запуске |
+| **Portainer** | `http://localhost:9000` | задаётся при первом входе |
+| **phpMyAdmin** | `http://localhost/phpmyadmin` | root / без пароля |
+| **pgAdmin** | `http://localhost/pgadmin4` | admin@admin.com / admin |
+| **OWASP ZAP** | GUI (`zap.sh &`) - API на `http://localhost:8080` | — |
+| **Minikube** | `minikube dashboard` — открывает браузер сам | — |
+
+**Демо-скрипт для показа веб-морд:**
+```bash
+# Показать что порты слушаются
+ss -tlnp | grep -E ':(3000|8080|9090|19999|5601|9200|9000|8888|631)'
+
+# Открыть конкретную
+xdg-open http://localhost:3000   # Grafana
+xdg-open http://localhost:9000   # SonarQube
+```
+
+> **Совет:** Если порт не открывается — проверь `systemctl status <сервис>` и `ss -tlnp | grep :<порт>`. Если запущено, но не слушается — `ufw allow <порт>`
+
+### 🚀 Быстрая демонстрация всего сразу
+
+Если препод просит **"покажи что всё работает"** — прогони эти строки по порядку:
+
+```bash
+# IDE
+code --version 2>/dev/null | head -1
+pycharm-community --version 2>/dev/null || echo "PyCharm: tarball в /opt/"
+
+# Языки
+python3 --version
+java -version 2>&1 | head -1
+node --version
+go version 2>/dev/null
+rustc --version 2>/dev/null
+
+# СУБД
+pg_isready 2>/dev/null && echo "PostgreSQL: OK" || echo "PostgreSQL: не запущен"
+mysqladmin ping 2>/dev/null && echo "MySQL: OK" || echo "MySQL: не запущен"
+redis-cli ping 2>/dev/null && echo "Redis: OK" || echo "Redis: не запущен"
+
+# DevOps
+docker --version 2>/dev/null
+docker compose version 2>/dev/null
+
+# Сеть/безопасность
+ufw status | head -1
+auditctl -l | head -2
+```
+
+---
+
 ## 🎯 УНИВЕРСАЛЬНАЯ ФРАЗА ДЛЯ ЛЮБОГО БИЛЕТА (говори если спросят "что сделал в этапе 2")
 
 > "Я проанализировал требования моего билета, определил необходимое ПО, установил его через терминал, убедился в совместимости с Ubuntu. **(обоснование выбора — 2.50)** После установки настроил интерфейс: тему, шрифт, автозагрузку, базовые расширения. **(стартовая настройка — 2.00)** Настроил обмен данными: запустил СУБД, инициализировал Git, создал каталоги импорта/экспорта. **(обмен данными — 2.00)** Выполнил настройки совместимости: цветовую палитру, низкое разрешение, отображение меню и кнопок, отключил композицию и масштабирование где необходимо. **(совместимость — 2.50)** Все версии актуальные, могу продемонстрировать работу каждой программы."

@@ -13,6 +13,12 @@
 
 ## Как пользоваться шаблоном
 
+> **Важно:** перед запуском `generate-template.py` установи `odfpy`:
+> ```bash
+> pip3 install odfpy
+> ```
+> (уже сделано в `setup.sh` на этапе 1)
+
 1. Скопировать `user-guide-template.md` в новый файл:
    ```bash
    cp user-guide-template.md user-guide-[название-по].md

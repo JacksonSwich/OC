@@ -59,7 +59,7 @@ add_cat "IDE и редакторы кода"
 cat1_name=(); cat1_check=(); cat1_install=(); cat1_desc=()
 pkg_ide() { cat1_name+=("$1"); cat1_check+=("$2"); cat1_install+=("$3"); cat1_desc+=("$4"); }
 pkg_ide "VS Code"           "command -v code"                              "wget -qO /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && dpkg -i /tmp/code.deb 2>/dev/null; $PM install -f -y -qq" "Универсальная IDE (JS, Python, Go, Rust...)"
-pkg_ide "PyCharm Community" "snap list pycharm-community 2>/dev/null"      "snap install pycharm-community --classic" "IDE для Python и Django"
+pkg_ide "PyCharm Community" "command -v /opt/pycharm-community/bin/pycharm.sh 2>/dev/null || snap list pycharm-community 2>/dev/null"      "snap install pycharm-community --classic 2>/dev/null || (echo '  Snap не сработал, качаю с JetBrains...' && wget -qO /tmp/pycharm.tar.gz 'https://download.jetbrains.com/python/pycharm-community-2024.2.tar.gz' && tar -xzf /tmp/pycharm.tar.gz -C /opt/ && ln -sf /opt/pycharm-community-*/bin/pycharm.sh /usr/local/bin/pycharm-community 2>/dev/null && ln -sf /opt/pycharm-community-* /opt/pycharm-community 2>/dev/null && rm -f /tmp/pycharm.tar.gz)" "IDE для Python и Django"
 pkg_ide "IntelliJ IDEA"     "snap list intellij-idea-community 2>/dev/null""snap install intellij-idea-community --classic" "IDE для Java, Kotlin"
 pkg_ide "Eclipse IDE"       "command -v eclipse 2>/dev/null"               "$PM install -y eclipse 2>/dev/null || snap install eclipse --classic" "IDE для Java, C/C++, PHP"
 pkg_ide "Android Studio"    "command -v android-studio 2>/dev/null"        "snap install android-studio --classic" "Разработка Android-приложений"

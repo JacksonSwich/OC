@@ -73,7 +73,18 @@ apt install -f -y -qq
 ### PyCharm Community (8 билетов)
 #1/#7/#14/#20/#21/#24/#26/#28
 ```bash
+# Способ 1 — Snap (основной)
 snap install pycharm-community --classic
+
+# Способ 2 — tarball с офсайта (если snap не взлетел)
+wget -qO /tmp/pycharm.tar.gz 'https://download.jetbrains.com/python/pycharm-community-2024.2.tar.gz'
+tar -xzf /tmp/pycharm.tar.gz -C /opt/
+ln -sf /opt/pycharm-community-* /opt/pycharm-community
+ln -sf /opt/pycharm-community/bin/pycharm.sh /usr/local/bin/pycharm-community
+rm -f /tmp/pycharm.tar.gz
+
+# Запуск
+pycharm-community &
 ```
 
 ### Eclipse IDE (6 билетов)

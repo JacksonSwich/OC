@@ -16,6 +16,28 @@ echo "[0/14] Обновление пакетов системы..."
 apt update -qq && apt upgrade -y -qq
 echo "  + Система обновлена"
 
+# ========== 1a. РУССКАЯ ЛОКАЛЬ И РАСКЛАДКА КЛАВИАТУРЫ ==========
+echo ""
+echo "[1a/14] Настройка русского языка и раскладки клавиатуры..."
+
+# языковой пакет
+apt install -y language-pack-ru -qq
+
+# генерация русской локали
+locale-gen ru_RU.UTF-8
+
+# добавляем русскую локаль в систему (английский для CLI не ломаем)
+update-locale LANG=en_US.UTF-8 LC_ALL=ru_RU.UTF-8 2>/dev/null || true
+
+# раскладка для графического режима (X11) — переключение по Alt+Shift
+localectl set-x11-keymap us,ru "" "" grp:alt_shift_toggle 2>/dev/null || true
+
+# раскладка для консоли
+localectl set-keymap ru 2>/dev/null || true
+
+echo "  + Русская локаль установлена (ru_RU.UTF-8)"
+echo "  + Раскладка: US + RU, переключение Alt+Shift"
+
 # ========== 1. НАСТРОЙКА ЯДРА (sysctl) ==========
 echo ""
 echo "[1/14] Настройка параметров ядра (sysctl)..."
@@ -103,9 +125,37 @@ apt install -y \
     p7zip-full \
     sshfs \
     build-essential \
+    python3-pip \
     -qq
 
 echo "  + Базовое ПО установлено"
+
+# ========== 6a. ШРИФТЫ WINDOWS (Times New Roman и др.) ==========
+echo ""
+echo "[6a/14] Установка шрифтов Windows..."
+
+# автоматическое принятие лицензионного соглашения
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+
+# установка шрифтов Microsoft
+apt install -y ttf-mscorefonts-installer -qq
+
+# дополнительные кириллические шрифты
+apt install -y fonts-dejavu-core fonts-dejavu-extra fonts-liberation -qq
+
+# обновление кэша шрифтов
+fc-cache -f
+
+echo "  + Шрифты Windows установлены (Times New Roman, Arial, Courier New)"
+echo "  + Кэш шрифтов обновлён"
+
+# ========== 6b. ПАКЕТЫ PYTHON (для .odt генерации) ==========
+echo ""
+echo "[6b/14] Установка Python-пакетов..."
+
+pip3 install odfpy -q
+
+echo "  + odfpy установлен (генерация .odt по ГОСТ)"
 
 # ========== 7. ВИРТУАЛЬНЫЙ ПРИНТЕР ==========
 echo ""
