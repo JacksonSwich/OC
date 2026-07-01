@@ -97,7 +97,7 @@ pkg_db "MariaDB"             "command -v mariadb 2>/dev/null"               "$PM
 pkg_db "MongoDB"             "command -v mongod 2>/dev/null"                "wget -qO /tmp/mongo.asc 'https://www.mongodb.org/static/pgp/server-7.0.asc' && gpg --dearmor -o /usr/share/keyrings/mongodb.gpg /tmp/mongo.asc 2>/dev/null; echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/mongodb.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse' > /etc/apt/sources.list.d/mongodb.list && $PM update -qq && $PM install -y mongodb-org -qq" "NoSQL (SPA, веб-сервисы)"
 pkg_db "Redis"               "command -v redis-server"                      "$PM install -y redis -qq" "Кэш/Broker (чат-боты, онлайн-игры)"
 pkg_db "phpMyAdmin"          "dpkg -l phpmyadmin 2>/dev/null | grep -q ^ii" "$PM install -y phpmyadmin -qq" "Веб-админка для MySQL"
-pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.11-linux-amd64.deb' && dpkg -i /tmp/influxdb.deb 2>/dev/null || snap install influxdb" "Time-series БД для телеметрии"
+pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.11-linux-amd64.deb' && (dpkg -i /tmp/influxdb.deb 2>/dev/null || true) && $PM install -f -y -qq; command -v influxd 2>/dev/null || snap install influxdb" "Time-series БД для телеметрии"
 
 # --- 4. Графические редакторы ---
 add_cat "Графические редакторы"
@@ -159,7 +159,7 @@ pkg_cont "Docker"             "command -v docker"                            "$P
 pkg_cont "Docker Compose"     "command -v docker-compose 2>/dev/null"        "$PM install -y docker-compose -qq" "Оркестрация нескольких контейнеров"
 pkg_cont "VirtualBox"         "command -v virtualbox 2>/dev/null"            "$PM install -y virtualbox -qq" "Виртуализация рабочей станции"
 pkg_cont "Vagrant"            "command -v vagrant"                           "$PM install -y vagrant -qq" "Инфраструктура как код (VMs)"
-pkg_cont "Minikube"           "command -v minikube"                          "wget -qO /tmp/minikube.deb 'https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb' && dpkg -i /tmp/minikube.deb" "Локальный Kubernetes"
+pkg_cont "Minikube"           "command -v minikube"                          "wget -qO /tmp/minikube.deb 'https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb' && dpkg -i /tmp/minikube.deb 2>/dev/null; $PM install -f -y -qq" "Локальный Kubernetes"
 pkg_cont "kubectl"            "command -v kubectl"                           "snap install kubectl --classic" "Управление Kubernetes"
 pkg_cont "KVM/libvirt"        "command -v virsh 2>/dev/null"                 "$PM install -y virt-manager libvirt-daemon-system -qq" "Виртуализация уровня ядра"
 pkg_cont "QEMU"               "command -v qemu-system-x86_64 2>/dev/null"    "$PM install -y qemu-system-x86 qemu-utils -qq" "Эмуляция железa"
@@ -173,7 +173,7 @@ pkg_mon "Prometheus"          "command -v prometheus 2>/dev/null"            "wg
 pkg_mon "Netdata"             "command -v netdata 2>/dev/null"               "bash <(curl -Ss https://my-netdata.io/kickstart.sh) -y 2>/dev/null" "Мониторинг системы в реальном времени"
 pkg_mon "Jenkins"             "command -v jenkins 2>/dev/null"               "wget -qO /tmp/jenkins.deb 'https://get.jenkins.io/debian-stable/jenkins_2.479.3_all.deb' && dpkg -i /tmp/jenkins.deb 2>/dev/null; $PM install -f -y -qq" "CI/CD сервер"
 pkg_mon "HAProxy"             "command -v haproxy"                           "$PM install -y haproxy -qq" "Балансировщик нагрузки"
-pkg_mon "Elasticsearch"       "command -v elasticsearch 2>/dev/null"         "wget -qO /tmp/es.deb 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.17.0-amd64.deb' && dpkg -i /tmp/es.deb 2>/dev/null || echo '  Установи вручную: wget ... && dpkg -i'" "Поисковая БД (логи, телеметрия)"
+pkg_mon "Elasticsearch"       "command -v elasticsearch 2>/dev/null"         "wget -qO /tmp/es.deb 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.17.0-amd64.deb' && (dpkg -i /tmp/es.deb 2>/dev/null || true) && $PM install -f -y -qq; command -v elasticsearch 2>/dev/null || echo '  Установи вручную: wget ... && dpkg -i'" "Поисковая БД (логи, телеметрия)"
 
 # --- 10. Безопасность ---
 add_cat "Безопасность"
@@ -189,7 +189,7 @@ pkg_sec "nmap"                "command -v nmap"                              "$P
 pkg_sec "auditd"              "command -v auditctl"                          "$PM install -y auditd audispd-plugins -qq" "Система аудита (журнал событий безопасности)"
 pkg_sec "OpenSSL"             "command -v openssl"                           "$PM install -y openssl -qq" "Шифрование и сертификаты"
 pkg_sec "SonarQube Scanner"   "command -v sonar-scanner 2>/dev/null"         "wget -qO /tmp/sonar.zip 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip' && unzip -qo /tmp/sonar.zip -d /opt/ 2>/dev/null; ln -sf /opt/sonar-scanner-*/bin/sonar-scanner /usr/local/bin/ 2>/dev/null" "Статический анализ кода (SAST)"
-pkg_sec "Trivy"               "command -v trivy 2>/dev/null"                 "wget -qO /tmp/trivy.deb 'https://github.com/aquasecurity/trivy/releases/download/v0.58.2/trivy_0.58.2_Linux-64bit.deb' && dpkg -i /tmp/trivy.deb 2>/dev/null || snap install trivy" "Сканирование уязвимостей"
+pkg_sec "Trivy"               "command -v trivy 2>/dev/null"                 "wget -qO /tmp/trivy.deb 'https://github.com/aquasecurity/trivy/releases/download/v0.58.2/trivy_0.58.2_Linux-64bit.deb' && (dpkg -i /tmp/trivy.deb 2>/dev/null || true) && $PM install -f -y -qq; command -v trivy 2>/dev/null || snap install trivy" "Сканирование уязвимостей"
 
 # --- 11. Утилиты ---
 add_cat "Утилиты и базовое ПО"
@@ -456,6 +456,35 @@ install_selected() {
     echo -e "${BLUE}Обновляю список пакетов...${NC}"
     $PM update -qq 2>/dev/null
 
+    # ---- Апгрейд pip и системные зависимости для pip-пакетов ----
+    local has_pip=0
+    for idx in "${to_install[@]}"; do
+        if [[ "${PKG_INSTALLS[$idx]}" == pip3* ]]; then
+            has_pip=1
+            break
+        fi
+    done
+    if [[ $has_pip -eq 1 ]]; then
+        echo -e "${BLUE}  Обновляю pip и системные зависимости Python...${NC}"
+        pip3 install --upgrade pip -q 2>/dev/null || true
+        export PIP_BREAK_SYSTEM_PACKAGES=1
+        $PM install -y python3-dev build-essential libgdal-dev -qq 2>/dev/null || true
+    fi
+
+    # ---- Проверка npm для npm-пакетов (Node.js должен быть установлен) ----
+    local has_npm=0
+    for idx in "${to_install[@]}"; do
+        if [[ "${PKG_INSTALLS[$idx]}" == npm* ]]; then
+            has_npm=1
+            break
+        fi
+    done
+    if [[ $has_npm -eq 1 ]] && ! command -v npm &>/dev/null; then
+        echo -e "${YELLOW}  ⚠ npm не найден! npm-пакеты не установятся без Node.js.${NC}"
+        echo -e "  ${YELLOW}  Сначала установи Node.js из категории 2 (Языки и SDK).${NC}"
+        echo -e "  ${GRAY}  После установки Node.js можно доустановить npm-пакеты.${NC}"
+    fi
+
     for idx in "${to_install[@]}"; do
         local name="${PKG_NAMES[$idx]}"
         local install_cmd="${PKG_INSTALLS[$idx]}"
@@ -561,6 +590,16 @@ EOF
 
 # Первичная настройка
 echo -e "${GRAY}Инициализация...${NC}"
+
+# ---- Debconf пресеты (чтобы установка не зависла) ----
+echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections 2>/dev/null || true
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean false" | debconf-set-selections 2>/dev/null || true
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections 2>/dev/null || true
+
+# ---- Реальный пользователь (работает даже из sudo -i) ----
+if [[ -z "$SUDO_USER" ]]; then
+    SUDO_USER=$(logname 2>/dev/null || echo "root")
+fi
 # Включаем universe репозиторий (там много IDE)
 $PM install -y software-properties-common -qq &>/dev/null
 add-apt-repository -y universe &>/dev/null || true
@@ -582,6 +621,10 @@ fi
 # Добавляем snap/bin в PATH для sudo
 if [[ ":$PATH:" != *":/snap/bin:"* ]]; then
     export PATH="$PATH:/snap/bin:/var/lib/snapd/snap/bin"
+fi
+# Ждём инициализацию snap (на свежей системе без этого snap install падает)
+if command -v snap &>/dev/null; then
+    snap wait system seed.loaded 2>/dev/null || true
 fi
 
 clear_screen
