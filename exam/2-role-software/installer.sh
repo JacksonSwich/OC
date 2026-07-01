@@ -60,7 +60,7 @@ cat1_name=(); cat1_check=(); cat1_install=(); cat1_desc=()
 pkg_ide() { cat1_name+=("$1"); cat1_check+=("$2"); cat1_install+=("$3"); cat1_desc+=("$4"); }
 pkg_ide "VS Code"           "command -v code"                              "wget -qO /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && dpkg -i /tmp/code.deb 2>/dev/null; $PM install -f -y -qq" "Универсальная IDE (JS, Python, Go, Rust...)"
 pkg_ide "PyCharm Community" "command -v /opt/pycharm-community/bin/pycharm.sh 2>/dev/null || snap list pycharm-community 2>/dev/null"      "snap install pycharm-community --classic 2>/dev/null || (echo '  Snap не сработал, качаю с JetBrains...' && wget -qO /tmp/pycharm.tar.gz 'https://download.jetbrains.com/python/pycharm-community-2024.2.tar.gz' && tar -xzf /tmp/pycharm.tar.gz -C /opt/ && ln -sf /opt/pycharm-community-*/bin/pycharm.sh /usr/local/bin/pycharm-community 2>/dev/null && ln -sf /opt/pycharm-community-* /opt/pycharm-community 2>/dev/null && rm -f /tmp/pycharm.tar.gz)" "IDE для Python и Django"
-pkg_ide "IntelliJ IDEA"     "snap list intellij-idea-community 2>/dev/null""snap install intellij-idea-community --classic" "IDE для Java, Kotlin"
+pkg_ide "IntelliJ IDEA"     "snap list intellij-idea-community 2>/dev/null || command -v idea 2>/dev/null" "snap install intellij-idea-community --classic 2>/dev/null || (echo '  Snap не сработал, качаю с JetBrains...' && wget -qO /tmp/idea.tar.gz 'https://data.services.jetbrains.com/products/download?platform=linux&code=IIC' && tar -xzf /tmp/idea.tar.gz -C /opt/ && ln -sf /opt/idea-IC-*/bin/idea.sh /usr/local/bin/idea 2>/dev/null && rm -f /tmp/idea.tar.gz)" "IDE для Java, Kotlin"
 pkg_ide "Eclipse IDE"       "command -v eclipse 2>/dev/null"               "$PM install -y eclipse 2>/dev/null || snap install eclipse --classic" "IDE для Java, C/C++, PHP"
 pkg_ide "Android Studio"    "command -v android-studio 2>/dev/null"        "snap install android-studio --classic" "Разработка Android-приложений"
 pkg_ide "Code::Blocks"      "command -v codeblocks 2>/dev/null"            "$PM install -y codeblocks -qq 2>/dev/null || snap install codeblocks --classic" "IDE для C/C++"
@@ -68,9 +68,9 @@ pkg_ide "Arduino IDE"       "command -v arduino 2>/dev/null"               "$PM 
 pkg_ide "Jupyter Lab"       "command -v jupyter-lab 2>/dev/null"           "pip3 install jupyterlab -q" "Интерактивная среда для Data Science"
 pkg_ide "Qt Creator"        "command -v qtcreator 2>/dev/null"             "$PM install -y qtcreator -qq 2>/dev/null || snap install qtcreator --classic" "IDE для C++/Qt приложений"
 pkg_ide "NetBeans"          "command -v netbeans 2>/dev/null"              "$PM install -y netbeans -qq 2>/dev/null || snap install netbeans --classic" "IDE для Java, PHP, C/C++"
-pkg_ide "MonoDevelop"       "command -v monodevelop 2>/dev/null"           "snap install monodevelop --classic 2>/dev/null || echo '  MonoDevelop не поддерживается, используй VS Code'" "IDE для .NET/C# под Linux"
-pkg_ide "CLion"             "snap list clion 2>/dev/null"                  "snap install clion --classic" "IDE для C/C++ от JetBrains"
-pkg_ide "WebStorm"          "snap list webstorm 2>/dev/null"               "snap install webstorm --classic" "IDE для JS/TS от JetBrains"
+pkg_ide "MonoDevelop"       "command -v monodevelop 2>/dev/null || command -v dotnet 2>/dev/null"           "$PM install -y monodevelop -qq 2>/dev/null || snap install monodevelop --classic 2>/dev/null || echo '  MonoDevelop не поддерживается, используй VS Code (C# плагины) или .NET SDK (категория 2)'" "IDE для .NET/C# под Linux"
+pkg_ide "CLion"             "snap list clion 2>/dev/null || command -v clion 2>/dev/null"               "snap install clion --classic 2>/dev/null || (echo '  Snap не сработал, качаю с JetBrains...' && wget -qO /tmp/clion.tar.gz 'https://data.services.jetbrains.com/products/download?platform=linux&code=CL' && tar -xzf /tmp/clion.tar.gz -C /opt/ && ln -sf /opt/clion-*/bin/clion.sh /usr/local/bin/clion 2>/dev/null && rm -f /tmp/clion.tar.gz)" "IDE для C/C++ от JetBrains"
+pkg_ide "WebStorm"          "snap list webstorm 2>/dev/null || command -v webstorm 2>/dev/null"           "snap install webstorm --classic 2>/dev/null || (echo '  Snap не сработал, качаю с JetBrains...' && wget -qO /tmp/ws.tar.gz 'https://data.services.jetbrains.com/products/download?platform=linux&code=WS' && tar -xzf /tmp/ws.tar.gz -C /opt/ && ln -sf /opt/WebStorm-*/bin/webstorm.sh /usr/local/bin/webstorm 2>/dev/null && rm -f /tmp/ws.tar.gz)" "IDE для JS/TS от JetBrains"
 
 # --- 2. Языки программирования и SDK ---
 add_cat "Языки и SDK"
@@ -468,6 +468,11 @@ install_selected() {
         echo -e "${BLUE}  Обновляю pip и системные зависимости Python...${NC}"
         pip3 install --upgrade pip -q 2>/dev/null || true
         export PIP_BREAK_SYSTEM_PACKAGES=1
+        # Прямой флаг для pip >= 23 (на всякий случай, если env var не подхватится)
+        local pip_extra=""
+        if pip3 install --help 2>/dev/null | grep -q break-system-packages; then
+            pip_extra="--break-system-packages"
+        fi
         $PM install -y python3-dev build-essential libgdal-dev -qq 2>/dev/null || true
     fi
 
@@ -498,7 +503,11 @@ install_selected() {
         fi
 
         # Пытаемся установить
-        eval "$install_cmd" >> "$INSTALL_DIR/install.log" 2>&1
+        if [[ "$install_cmd" == pip3* ]] && [[ -n "$pip_extra" ]]; then
+            eval "$install_cmd $pip_extra" >> "$INSTALL_DIR/install.log" 2>&1
+        else
+            eval "$install_cmd" >> "$INSTALL_DIR/install.log" 2>&1
+        fi
         local exit_code=$?
 
         if [[ $exit_code -eq 0 ]]; then
@@ -622,9 +631,13 @@ fi
 if [[ ":$PATH:" != *":/snap/bin:"* ]]; then
     export PATH="$PATH:/snap/bin:/var/lib/snapd/snap/bin"
 fi
+# Добавляем snap/bin в системный PATH для всех пользователей
+if ! grep -q "snap/bin" /etc/bash.bashrc 2>/dev/null; then
+    echo 'export PATH="$PATH:/snap/bin:/var/lib/snapd/snap/bin"' >> /etc/bash.bashrc 2>/dev/null || true
+fi
 # Ждём инициализацию snap (на свежей системе без этого snap install падает)
 if command -v snap &>/dev/null; then
-    snap wait system seed.loaded 2>/dev/null || true
+    timeout 120 snap wait system seed.loaded 2>/dev/null || true
 fi
 
 clear_screen
