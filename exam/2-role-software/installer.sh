@@ -78,10 +78,10 @@ cat2_name=(); cat2_check=(); cat2_install=(); cat2_desc=()
 pkg_lang() { cat2_name+=("$1"); cat2_check+=("$2"); cat2_install+=("$3"); cat2_desc+=("$4"); }
 pkg_lang "Python 3 + pip"   "command -v python3 && command -v pip3"        "$PM install -y python3-pip python3-venv python3-dev -qq" "Базовый язык для многих билетов"
 pkg_lang "Node.js (LTS)"    "command -v node && node -v | grep -q 'v20\|v22'" "curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && $PM install -y nodejs -qq" "Среда для JS/TS, веб-сервисы, SPA"
-pkg_lang "OpenJDK 17"       "java -version 2>&1 | grep -q 'openjdk.*17'"   "$PM install -y openjdk-17-jdk -qq" "Java SE (банк, финансы, корп.ПО)"
-pkg_lang "OpenJDK 8"        "java -version 2>&1 | grep -q 'openjdk.*1.8'"  "$PM install -y openjdk-8-jdk -qq" "Java 8 (совместимость со старым ПО)"
+pkg_lang "OpenJDK 17"       "java -version 2>&1 | grep -q 'openjdk.*17' || dpkg -l openjdk-17-jdk 2>/dev/null | grep -q '^ii'"   "$PM install -y openjdk-17-jdk -qq" "Java SE (банк, финансы, корп.ПО)"
+pkg_lang "OpenJDK 8"        "java -version 2>&1 | grep -q 'openjdk.*1.8' || dpkg -l openjdk-8-jdk 2>/dev/null | grep -q '^ii'"  "$PM install -y openjdk-8-jdk -qq" "Java 8 (совместимость со старым ПО)"
 pkg_lang "Go (Golang)"      "command -v go"                                "$PM install -y golang -qq" "Go для DevOps/CLI утилит"
-pkg_lang "Rust"             "command -v rustc"                             "su -c 'curl --proto \"=https\" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' \$SUDO_USER" "Rust для системного ПО"
+pkg_lang "Rust"             "command -v rustc 2>/dev/null || ls /home/*/.cargo/bin/rustc 2>/dev/null"                             "su -c 'curl --proto \"=https\" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' \$SUDO_USER" "Rust для системного ПО"
 pkg_lang ".NET SDK"          "command -v dotnet && dotnet --list-sdks | grep -q '8\|9'" "wget -qO /tmp/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb && dpkg -i /tmp/packages-microsoft-prod.deb && $PM update -qq && $PM install -y dotnet-sdk-8.0 -qq" "C#, ASP.NET (билет 9)"
 pkg_lang "Flutter SDK"      "command -v flutter"                           "snap install flutter --classic" "Кроссплатформенная мобильная разработка"
 pkg_lang "GCC (build-essential)" "command -v gcc && command -v make"       "$PM install -y build-essential -qq" "Компилятор C/C++, make, libc"
