@@ -65,7 +65,7 @@ pkg_ide "Eclipse IDE"       "command -v eclipse 2>/dev/null"               "$PM 
 pkg_ide "Android Studio"    "command -v android-studio 2>/dev/null"        "snap install android-studio --classic" "Разработка Android-приложений"
 pkg_ide "Code::Blocks"      "command -v codeblocks 2>/dev/null"            "$PM install -y codeblocks -qq 2>/dev/null || snap install codeblocks --classic" "IDE для C/C++"
 pkg_ide "Arduino IDE"       "command -v arduino 2>/dev/null"               "$PM install -y arduino -qq 2>/dev/null || snap install arduino" "Разработка для Arduino/MCU"
-pkg_ide "Jupyter Lab"       "command -v jupyter-lab 2>/dev/null"           "pip3 install jupyterlab -q" "Интерактивная среда для Data Science"
+pkg_ide "Jupyter Lab"       "command -v jupyter-lab 2>/dev/null || command -v jupyter-lab-desktop 2>/dev/null || snap list jupyterlab-desktop 2>/dev/null"           "snap install jupyterlab-desktop --classic 2>/dev/null || pip3 install jupyterlab -q" "Интерактивная среда для Data Science"
 pkg_ide "Qt Creator"        "command -v qtcreator 2>/dev/null"             "$PM install -y qtcreator -qq 2>/dev/null || snap install qtcreator --classic" "IDE для C++/Qt приложений"
 pkg_ide "NetBeans"          "command -v netbeans 2>/dev/null"              "$PM install -y netbeans -qq 2>/dev/null || snap install netbeans --classic" "IDE для Java, PHP, C/C++"
 pkg_ide "MonoDevelop"       "command -v monodevelop 2>/dev/null || command -v dotnet 2>/dev/null"           "$PM install -y monodevelop -qq 2>/dev/null || snap install monodevelop --classic 2>/dev/null || echo '  MonoDevelop не поддерживается, используй VS Code (C# плагины) или .NET SDK (категория 2)'" "IDE для .NET/C# под Linux"
