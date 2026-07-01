@@ -158,7 +158,7 @@ pkg_cont() { cat8_name+=("$1"); cat8_check+=("$2"); cat8_install+=("$3"); cat8_d
 pkg_cont "Docker"             "command -v docker"                            "$PM install -y docker.io -qq && systemctl enable docker --now" "Контейнеризация приложений"
 pkg_cont "Docker Compose"     "command -v docker-compose 2>/dev/null"        "$PM install -y docker-compose -qq" "Оркестрация нескольких контейнеров"
 pkg_cont "VirtualBox"         "command -v virtualbox 2>/dev/null"            "$PM install -y virtualbox -qq" "Виртуализация рабочей станции"
-pkg_cont "Vagrant"            "command -v vagrant"                           "$PM install -y vagrant -qq" "Инфраструктура как код (VMs)"
+pkg_cont "Vagrant"            "command -v vagrant"                           "$PM install -y vagrant -qq 2>/dev/null || snap install vagrant 2>/dev/null || (echo '  Snap не сработал, качаю с HashiCorp...' && wget -qO /tmp/vagrant.deb 'https://releases.hashicorp.com/vagrant/2.4.1/vagrant_2.4.1-1_amd64.deb' && dpkg -i /tmp/vagrant.deb 2>/dev/null && $PM install -f -y -qq)" "Инфраструктура как код (VMs)"
 pkg_cont "Minikube"           "command -v minikube"                          "wget -qO /tmp/minikube.deb 'https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb' && dpkg -i /tmp/minikube.deb 2>/dev/null; $PM install -f -y -qq" "Локальный Kubernetes"
 pkg_cont "kubectl"            "command -v kubectl"                           "snap install kubectl --classic" "Управление Kubernetes"
 pkg_cont "KVM/libvirt"        "command -v virsh 2>/dev/null"                 "$PM install -y virt-manager libvirt-daemon-system -qq" "Виртуализация уровня ядра"
