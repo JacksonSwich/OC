@@ -221,8 +221,8 @@ pkg_spec "R + RStudio"        "command -v R 2>/dev/null"                     "$P
 pkg_spec "OpenOCD"            "command -v openocd 2>/dev/null"               "$PM install -y openocd -qq" "Программатор микроконтроллеров"
 pkg_spec "can-utils"          "command -v candump 2>/dev/null"               "$PM install -y can-utils -qq" "CAN-шина (автомобильные системы)"
 pkg_spec "GStreamer"          "command -v gst-launch-1.0 2>/dev/null"        "$PM install -y gstreamer1.0-tools gstreamer1.0-plugins-good -qq" "Мультимедиа фреймворк (CV, видео)"
-pkg_spec "Rasa"               "python3 -c 'import rasa' 2>/dev/null"         "pip3 install rasa -q" "Чат-боты и диалоговый AI"
-pkg_spec "Open3D"             "python3 -c 'import open3d' 2>/dev/null"       "pip3 install open3d -q" "3D-обработка (AR/VR, игры)"
+pkg_spec "Rasa"               "python3 -c 'import rasa' 2>/dev/null"         "$PM install -y build-essential python3-dev -qq 2>/dev/null; pip3 install --upgrade setuptools wheel -q 2>/dev/null; pip3 install rasa -q" "Чат-боты и диалоговый AI"
+pkg_spec "Open3D"             "python3 -c 'import open3d' 2>/dev/null"       "$PM install -y libgl1 -qq 2>/dev/null; pip3 install open3d -q" "3D-обработка (AR/VR, игры)"
 pkg_spec "sshfs"              "command -v sshfs"                             "$PM install -y sshfs -qq" "Монтирование удалённых папок по SSH"
 
 # ===================== ЯДРО ИНТЕРФЕЙСА =====================
