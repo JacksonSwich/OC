@@ -15,6 +15,42 @@ apt update && apt upgrade -y
 
 ---
 
+## 0.5. Настройка локали и часового пояса
+
+Настройка русского языка системы и часового пояса Москвы.
+
+```bash
+# установка русского языкового пакета
+apt install -y language-pack-ru
+
+# генерация русской локали
+locale-gen ru_RU.UTF-8
+
+# установка локали (английский для CLI не ломаем)
+update-locale LANG=en_US.UTF-8 LC_ALL=ru_RU.UTF-8
+
+# раскладка клавиатуры (US+RU, переключение Alt+Shift)
+localectl set-x11-keymap us,ru "" "" grp:alt_shift_toggle
+
+# установка часового пояса Москвы
+timedatectl set-timezone Europe/Moscow
+
+# включить синхронизацию времени по NTP
+timedatectl set-ntp true
+
+# проверка
+timedatectl
+```
+
+**Результат:**
+- Локаль: `ru_RU.UTF-8`
+- Раскладка: US + RU, переключение **Alt+Shift**
+- Часовой пояс: `Europe/Moscow` (MSK, UTC+3)
+
+**Преподу сказать:** Настроил русскую локаль для поддержки кириллицы в системе. Часовой пояс — Москва (UTC+3). Синхронизация времени по NTP включена — время всегда точное.
+
+---
+
 ## 1. Настройка ядра (sysctl) — 2.5 балла
 
 ```bash

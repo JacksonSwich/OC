@@ -22,9 +22,9 @@ echo "[0/17] Обновление пакетов системы..."
 apt update -qq && apt upgrade -y -qq
 echo "  + Система обновлена"
 
-# ========== 1a. РУССКАЯ ЛОКАЛЬ И РАСКЛАДКА КЛАВИАТУРЫ ==========
+# ========== 1a. РУССКАЯ ЛОКАЛЬ, РАСКЛАДКА И ЧАСОВОЙ ПОЯС ==========
 echo ""
-echo "[1a/17] Настройка русского языка и раскладки клавиатуры..."
+echo "[1a/17] Настройка русского языка, раскладки и часового пояса..."
 
 # языковой пакет
 apt install -y language-pack-ru -qq
@@ -43,6 +43,16 @@ localectl set-keymap ru 2>/dev/null || true
 
 echo "  + Русская локаль установлена (ru_RU.UTF-8)"
 echo "  + Раскладка: US + RU, переключение Alt+Shift"
+
+# ========== 1a.1 ЧАСОВОЙ ПОЯС — МОСКВА ==========
+# установка часового пояса
+timedatectl set-timezone Europe/Moscow
+
+# синхронизация времени с ntp (если доступно)
+timedatectl set-ntp true 2>/dev/null || true
+
+# показываем результат
+echo "  + Часовой пояс: $(timedatectl | grep 'Time zone' | awk '{print $3}') ($(timedatectl | grep 'Time zone' | awk '{print $4,$5}'))"
 
 # ========== 1. НАСТРОЙКА ЯДРА (sysctl) ==========
 echo ""
@@ -293,6 +303,7 @@ echo "   НАСТРОЙКА ЗАВЕРШЕНА!"
 echo "============================================"
 echo ""
 echo "Проверь вручную:"
+echo "  - Часовой пояс: timedatectl | grep 'Time zone'"
 echo "  - SSH:        systemctl status ssh"
 echo "  - XRDP:       systemctl status xrdp"
 echo "  - Принтер:    lpstat -t"
