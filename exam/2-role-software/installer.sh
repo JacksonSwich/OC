@@ -97,7 +97,7 @@ pkg_db "MariaDB"             "command -v mariadb 2>/dev/null"               "$PM
 pkg_db "MongoDB"             "command -v mongod 2>/dev/null"                "wget -qO /tmp/mongo.asc 'https://www.mongodb.org/static/pgp/server-7.0.asc' && gpg --dearmor -o /usr/share/keyrings/mongodb.gpg /tmp/mongo.asc 2>/dev/null; echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/mongodb.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse' > /etc/apt/sources.list.d/mongodb.list && $PM update -qq && $PM install -y mongodb-org -qq" "NoSQL (SPA, веб-сервисы)"
 pkg_db "Redis"               "command -v redis-server"                      "$PM install -y redis -qq" "Кэш/Broker (чат-боты, онлайн-игры)"
 pkg_db "phpMyAdmin"          "dpkg -l phpmyadmin 2>/dev/null | grep -q ^ii" "$PM install -y phpmyadmin -qq" "Веб-админка для MySQL"
-pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.11-linux-amd64.deb' && (dpkg -i /tmp/influxdb.deb 2>/dev/null || true) && $PM install -f -y -qq; command -v influxd 2>/dev/null || snap install influxdb" "Time-series БД для телеметрии"
+pkg_db "InfluxDB"            "command -v influxd 2>/dev/null"               "wget -qO /tmp/influxdb.deb 'https://dl.influxdata.com/influxdb/releases/influxdb2-2.7.11-linux-amd64.deb' 2>/dev/null && (dpkg -i /tmp/influxdb.deb 2>/dev/null || true) && $PM install -f -y -qq; command -v influxd 2>/dev/null || snap install influxdb --channel=beta 2>/dev/null || echo '  Установи InfluxDB вручную: snap install influxdb --channel=beta'" "Time-series БД для телеметрии"
 
 # --- 4. Графические редакторы ---
 add_cat "Графические редакторы"
