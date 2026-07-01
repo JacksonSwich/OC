@@ -163,6 +163,8 @@ snap install monodevelop --classic 2>/dev/null || echo "Используй VS Co
 apt install -y python3-pip python3-venv python3-dev -qq
 ```
 
+> ⚠️ **Если библиотеки не устанавливаются через pip3:** На Ubuntu 22.04+ защита системного окружения (PEP 668) блокирует `pip3 install`. Скрипт установщика это обходит, но вручную библиотеки можно поставить в **PyCharm** (`Settings → Project → Python Interpreter → +`) или **VS Code** (`Ctrl+Shift+P → Python: Create Environment` → терминал → `pip install`). Либо создать venv: `python3 -m venv ~/myenv && source ~/myenv/bin/activate && pip install <библиотека>`.
+
 ### OpenJDK 17 (5 билетов)
 #5/#14/#18/#27/#29
 ```bash
